@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Search Portal</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+       
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        .login-signup {
+            text-align: right;
+            padding: 10px;
+        }
+        .login-signup a {
+            color: #fff;
+            margin-left: 10px;
+        }
+        .search-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #3498db;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .job-post {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .search-input {
+            flex: 1;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Job Search Portal</h1>
+        <div class="login-signup">
+            <a href="#">Login</a>
+            <a href="#">Sign Up</a>
+        </div>
+    </div>
+
+    <div class="container">
+      
+        <div class="search-bar">
+            <div class="form-group search-input">
+                <input type="text" class="form-control" id="search" placeholder="Search Jobs">
+            </div>
+            <button class="btn btn-primary" onclick="filterJobs()">Search</button>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="salary">Filter By Salary</label>
+                <input type="number" class="form-control" id="salary" placeholder="Salary">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="duration">Duration</label>
+                <input type="number" class="form-control" id="duration" placeholder="Duration">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="location">Filter By Location</label>
+                <input type="text" class="form-control" id="location" placeholder="Location">
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="filterJobs()">Search</button>
+
+      
+        <div id="jobListings">
+            
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+     
+        const jobData = [
+            {
+                title: 'React Developer',
+                duration: 'Full-time',
+                company: 'Agile Private Limited',
+                location: 'Delhi',
+                startDate: '24 Jan 2023',
+                workFrom: 'Office',
+                salary: 275000
+            },
+            {
+                title: 'Fullstack Developer',
+                duration: 'Full-time',
+                company: 'Agile',
+                location: 'Delhi',
+                startDate: '24 Jan 2023',
+                workFrom: 'Office',
+                salary: 250000
+            }
+        
+        ];
+
+        
+        function filterJobs() {
+            const searchFilter = document.getElementById('search').value;
+            const salaryFilter = document.getElementById('salary').value;
+            const durationFilter = document.getElementById('duration').value;
+            const locationFilter = document.getElementById('location').value;
+
+            const filteredJobs = jobData.filter(job => 
+                (searchFilter === '' || job.title.toLowerCase().includes(searchFilter.toLowerCase())) &&
+                (salaryFilter === '' || job.salary >= parseInt(salaryFilter)) &&
+                (durationFilter === '' || job.duration.toLowerCase().includes(durationFilter.toLowerCase())) &&
+                (locationFilter === '' || job.location.toLowerCase().includes(locationFilter.toLowerCase()))
+            );
+
+            displayJobs(filteredJobs);
+        }
+
+       
+        function displayJobs(jobs) {
+            const jobListingsContainer = document.getElementById('jobListings');
+            jobListingsContainer.innerHTML = '';
+
+            jobs.forEach(job => {
+                const jobListing = document.createElement('div');
+                jobListing.classList.add('job-post');
+
+                const detailHTML = `<p><strong>${job.title}</strong></p>
+                                    <p><strong>Duration:</strong> ${job.duration}</p>
+                                    <p><strong>Company:</strong> ${job.company}</p>
+                                    <p><strong>Location:</strong> ${job.location}</p>
+                                    <p><strong>Start Date:</strong> ${job.startDate}</p>
+                                    <p><strong>Work From:</strong> ${job.workFrom}</p>
+                                    <p><strong>Salary:</strong> ${job.salary}</p>`;
+
+                jobListing.innerHTML = detailHTML;
+
+                jobListingsContainer.appendChild(jobListing);
+            });
+        }
+
+      
+        displayJobs(jobData);
+    </script>
+</body>
+</html>
+
